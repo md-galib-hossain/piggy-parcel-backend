@@ -11,7 +11,6 @@ const envFile = `.env.${NODE_ENV}`;
 dotenv.config({ path: envFile });
 dotenv.config(); // fallback
 
-console.log(`✅ Loaded environment: ${NODE_ENV}`);
 
 // ------------------------------------------------------
 // Validate environment variables using Zod
