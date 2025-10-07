@@ -1,13 +1,14 @@
-import { ZodIssue } from "zod";
-import { TErrorSources, TGenericErrorResponse } from "@piggy/types";
+import { ZodIssueBase } from "zod/v3";
 import { ErrorObject } from "../middlewares/globalErrorHandler";
+import { TErrorSource, TGenericErrorResponse } from "../types";
+
 
 const handleZodError = (err: ErrorObject): TGenericErrorResponse => {
   const statusCode = 400;
-  const errorSources: TErrorSources = err.issues?.map((issue: ZodIssue) => {
+  const errorSources: TErrorSource[] = err.issues?.map((issue: ZodIssueBase) => {
     return {
       path: issue?.path[issue?.path?.length - 1] || issue?.path.join('.'),
-      message: issue?.message,
+      message: issue?.message || 'Validation error',
     };
   }) || [];
   

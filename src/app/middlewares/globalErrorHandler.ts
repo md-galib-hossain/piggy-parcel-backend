@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-import { TErrorSources } from "@piggy/types";
 import handleZodError from "../errors/handleZodError";
-import handleDatabaseError from "../errors/handleDatabaseError";
 import AppError from "../errors/AppError";
 import { ZodIssueBase } from "zod/v3";
+import { TErrorSource } from "../types";
+import handleDatabaseError from "../errors/handleDatabaseError";
 
 export interface ErrorObject {
   message?: string;
@@ -29,7 +29,7 @@ const globalErrorHandler = (
   let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
   const success = false;
   let message = "Something went wrong";
-  let errorSources: TErrorSources = [{
+  let errorSources: TErrorSource[] = [{
     path: "",
     message: "Something went wrong"
   }];
