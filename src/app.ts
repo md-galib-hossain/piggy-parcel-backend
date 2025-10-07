@@ -2,10 +2,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import httpStatus from "http-status";
 import express, { Application, Request, Response } from "express";
+import { AppConfig } from "./app/config/AppConfig";
 
 
 const app: Application = express();
-// const corsOrigins = ServerConfig.getInstance().security.corsOrigins;
+const corsOrigins = AppConfig.getInstance().security.corsOrigins;
 
 app.use(cors({ origin: corsOrigins, credentials: true }));
 app.use(cookieParser());
