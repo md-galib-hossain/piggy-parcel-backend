@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import httpStatus from "http-status";
 import express, { Application, Request, Response } from "express";
 import { AppConfig } from "./app/config/AppConfig";
+import router from "./app/routes";
 
 
 const app: Application = express();
@@ -21,12 +22,13 @@ app.get("/", (req: Request, res: Response) => {
     message: "🚀 Piggy Parcel API v1 is running!",
     endpoints: {
       users: "/api/v1/consumer/users",
-      health: "/api/v1/health"
+      health: "/api/v1/health",
+      test: "/api/v1/test"
     }
   });
 });
-// app.all('/api/auth/{*any}', authHandler);
-// app.use("/api/v1", router);
+
+app.use("/api/v1", router);
 
 
 app.use((req: Request, res: Response) => {

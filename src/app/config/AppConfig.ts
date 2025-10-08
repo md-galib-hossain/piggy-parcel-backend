@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import { config as dotenvConfig } from "dotenv";
 import { z } from "zod";
 
 // ------------------------------------------------------
@@ -8,8 +8,8 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const envFile = `.env.${NODE_ENV}`;
 
 // Load from .env.<NODE_ENV> if exists, otherwise fallback to .env
-dotenv.config({ path: envFile });
-dotenv.config(); // fallback
+dotenvConfig({ path: envFile });
+dotenvConfig(); // fallback
 
 
 // ------------------------------------------------------
@@ -35,6 +35,10 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   EMAIL_FROM: z.email("Email from must be a valid email").optional(),
+
+  // Redis (for BullMQ)
+  UPSTASH_REDIS_REST_URL: z.string().url("Upstash Redis REST URL is required"),
+  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, "Upstash Redis REST token is required"),
 
   // API & CORS
   API_URL: z.url("Api url must be valid url").optional(),
@@ -78,6 +82,11 @@ interface EmailConfig {
     user?: string | undefined;
     pass?: string | undefined;
   };
+}
+
+interface RedisConfig {
+  restUrl: string;
+  restToken: string;
 }
 
 interface SuperAdminConfig {
@@ -159,6 +168,13 @@ export class AppConfig {
         user: this.e.SMTP_USER,
         pass: this.e.SMTP_PASS,
       },
+    };
+  }
+
+  get redis(): RedisConfig {
+    return {
+      restUrl: this.e.UPSTASH_REDIS_REST_URL,
+      restToken: this.e.UPSTASH_REDIS_REST_TOKEN,
     };
   }
 

@@ -2,6 +2,7 @@ import { createServer, Server } from "http";
 import { AppConfig } from "./app/config/AppConfig";
 import app from "./app";
 import { pool } from "./db";
+import { Email, createEmailConfig } from "./email";
 
 const server: Server = createServer(app);
 
@@ -33,7 +34,9 @@ async function main() {
     const apiUrl = config.server.apiUrl;
 
     // Initialize email service
-    // initializeEmailService();
+    const emailConfig = createEmailConfig();
+    Email.initialize(emailConfig);
+
     // await bootstrapSuperAdmin()
 
     server.listen(port, () => {
