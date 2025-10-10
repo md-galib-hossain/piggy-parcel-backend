@@ -37,8 +37,9 @@ const envSchema = z.object({
   EMAIL_FROM: z.email("Email from must be a valid email").optional(),
 
   // Redis (for BullMQ)
-  UPSTASH_REDIS_REST_URL: z.string().url("Upstash Redis REST URL is required"),
-  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, "Upstash Redis REST token is required"),
+  REDIS_HOST: z.string().default("piggy-redis"),
+  REDIS_PORT: z.coerce.number().int().positive().default(6379),
+  REDIS_PASSWORD: z.string().optional(),
 
   // API & CORS
   API_URL: z.url("Api url must be valid url").optional(),
@@ -85,8 +86,9 @@ interface EmailConfig {
 }
 
 interface RedisConfig {
-  restUrl: string;
-  restToken: string;
+  host: string;
+  port: number;
+  password?: string | undefined;
 }
 
 interface SuperAdminConfig {
@@ -173,8 +175,9 @@ export class AppConfig {
 
   get redis(): RedisConfig {
     return {
-      restUrl: this.e.UPSTASH_REDIS_REST_URL,
-      restToken: this.e.UPSTASH_REDIS_REST_TOKEN,
+      host: this.e.REDIS_HOST,
+      port: this.e.REDIS_PORT,
+      password: this.e.REDIS_PASSWORD,
     };
   }
 
