@@ -16,12 +16,7 @@ export function initializeEmailService(config: EmailServiceConfig): void {
   isInitialized = true;
 }
 
-/**
- * Check if the email service is initialized
- */
-export function isEmailServiceInitialized(): boolean {
-  return isInitialized;
-}
+
 
 /**
  * Get the current email configuration
@@ -105,7 +100,7 @@ export async function enqueueEmail(
     attachments?: { path: string; name?: string }[];
   }
 ): Promise<void> {
-  getEmailConfig(); // ensure initialized
+  getEmailConfig(); 
 
   await emailQueue.add("sendEmail", { templateName, to, data, ...(options && { options }) });
 }
