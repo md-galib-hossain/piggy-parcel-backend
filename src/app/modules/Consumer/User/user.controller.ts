@@ -28,11 +28,11 @@ const loginUser = catchAsync(async (req, res) => {
 const requestPasswordReset = catchAsync(async (req, res) => {
 	const { email } = req.body;
 	const result = await UserService.requestPasswordReset(email);
-
+	console.log(result, "asdasd");
 	sendResponse(res, {
-		data: result.data,
+		data: null,
 		success: true,
-		message: result.message,
+		message: "Password reset email sent",
 		statusCode: 200,
 	});
 });

@@ -69,7 +69,6 @@ export const seedSuperAdmin = async () => {
 			await Email.sendWelcomeEmail(email, {
 				userName: config.superAdmin.name,
 			});
-			console.log(`📧 Welcome email sent to ${email}`);
 		} catch (err) {
 			console.error("Failed to send welcome email:", err);
 		}

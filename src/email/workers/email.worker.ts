@@ -1,12 +1,19 @@
 import { type Job, Worker } from "bullmq";
 import { Resend } from "resend";
-import { createEmailConfig } from "../config/EmailConfig";
+import { AppConfig } from "../../app/config/AppConfig";
 import { EmailTemplateFactory } from "../factory/EmailTemplateFactory";
 import type { EmailJobData } from "../queue/email.queue";
 import { redisConnection } from "../queue/redis.connection";
 
-// Load your app config (or env)
-const config = createEmailConfig();
+// Load your app config
+const appConfig = AppConfig.getInstance();
+const config = {
+	resendApiKey: appConfig.email.resendApiKey,
+	emailFrom: appConfig.email.from,
+	server: {
+		apiUrl: appConfig.server.apiUrl,
+	},
+};
 
 console.log("🚀 Email Worker starting...");
 console.log(

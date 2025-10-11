@@ -50,6 +50,10 @@ const envSchema = z.object({
 	SUPER_ADMIN_NAME: z.string().min(1),
 	SUPER_ADMIN_USERNAME: z.string().min(1),
 
+	// Client URLs
+	WEB_CLIENT_URL: z.string(),
+	ADMIN_CLIENT_URL: z.string(),
+
 	// Optional
 	LOG_LEVEL: z
 		.enum(["debug", "info", "warn", "error"])
@@ -111,6 +115,11 @@ interface ServerSettings {
 	logLevel: "debug" | "info" | "warn" | "error";
 }
 
+interface ClientConfig {
+	web: string;
+	admin: string;
+}
+
 // ------------------------------------------------------
 // AppConfig Singleton
 // ------------------------------------------------------
@@ -153,6 +162,12 @@ export class AppConfig {
 		};
 	}
 
+	get client(): ClientConfig {
+		return {
+			web: this.e.WEB_CLIENT_URL || "http://localhost:3000",
+			admin: this.e.ADMIN_CLIENT_URL || "http://localhost:3001",
+		};
+	}
 	get database(): DatabaseConfig {
 		return {
 			url: this.e.DATABASE_URL,

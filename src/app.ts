@@ -8,6 +8,7 @@ import express, {
 import httpStatus from "http-status";
 import { authHandler } from "@/app/auth/auth";
 import { AppConfig } from "@/app/config/AppConfig";
+import globalErrorHandler from "@/app/middlewares/globalErrorHandler";
 import router from "@/app/routes/v1";
 
 const app: Application = express();
@@ -46,6 +47,6 @@ app.use((req: Request, res: Response) => {
 		},
 	});
 });
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 export default app;

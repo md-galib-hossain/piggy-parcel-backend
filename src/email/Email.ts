@@ -2,6 +2,7 @@
  * Clean and easy-to-use Email class with static methods
  * Usage: Email.sendWelcomeEmail(to, userData)
  */
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
 
 import { enqueueEmail, initializeEmailService } from "./service/email.service";
 import type {

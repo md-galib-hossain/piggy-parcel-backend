@@ -1,4 +1,5 @@
 import { auth } from "@/app/auth/auth";
+import { appConfig } from "@/app/config/AppConfig";
 import AppError from "@/app/errors/AppError";
 import type { CreateUser } from "@/app/types";
 import { Email } from "@/email";
@@ -52,21 +53,16 @@ const requestPasswordReset = async (email: string) => {
 		Math.random().toString(36).substring(2, 15) +
 		Math.random().toString(36).substring(2, 15);
 
+	const url = appConfig.client.web;
 	// In a real app, you'd store this token in the database with expiration
-	const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+	const resetLink = `${url}/reset-password?token=${resetToken}`;
 
-	try {
-		await Email.sendPasswordResetEmail(email, {
-			userName: "User", // In real app, get from database
-			resetLink: resetLink,
-		});
+	const res = await Email.sendPasswordResetEmail(email, {
+		userName: "User", // In real app, get from database
+		resetLink: resetLink,
+	});
 
-		console.log(`📧 Password reset email sent to ${email}`);
-		return { data: null, message: "Password reset failed" };
-	} catch (error) {
-		console.error("Failed to send password reset email:", error);
-		return { data: null, message: `📧 Password reset email sent to ${email}` };
-	}
+	return res;
 };
 
 export const UserService = {
