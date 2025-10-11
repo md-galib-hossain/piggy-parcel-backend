@@ -40,7 +40,7 @@ export const seedSuperAdmin = async () => {
 			if (existingUser.role !== "SUPERADMIN") {
 				await db
 					.update(user)
-					.set({ role: "SUPERADMIN" })
+					.set({ role: "SUPERADMIN", emailVerified: true })
 					.where(eq(user.email, email));
 
 				console.log("🔑 Updated existing user with SUPERADMIN role");
@@ -58,7 +58,7 @@ export const seedSuperAdmin = async () => {
 			});
 			await db
 				.update(user)
-				.set({ role: "SUPERADMIN" })
+				.set({ role: "SUPERADMIN", emailVerified: true })
 				.where(eq(user.email, email));
 
 			console.log("🚀 Superadmin created successfully");
