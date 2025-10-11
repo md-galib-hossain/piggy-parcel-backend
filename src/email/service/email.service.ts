@@ -55,7 +55,7 @@ export async function sendEmail(
 
 		// Prepare email options
 		const emailOptions: any = {
-			from: config.emailFrom ?? "noreply@piggyparcel.com",
+			from: config.emailFrom,
 			to: to,
 			subject: emailData.subject,
 			html: emailData.html,

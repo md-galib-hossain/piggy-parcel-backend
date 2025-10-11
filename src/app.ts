@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// biome-ignore lint/correctness/noUnusedFunctionParameters: <explanation> for testing purposes
 app.get("/", (req: Request, res: Response) => {
 	res.json({
 		success: true,

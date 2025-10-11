@@ -56,7 +56,7 @@ const globalErrorHandler = (
 	}
 	// Handle PostgreSQL/Database errors
 	else if (err.code && typeof err.code === "string") {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		const simplifiedError = handleDatabaseError(err as any);
 		statusCode = simplifiedError.statusCode;
 		message = simplifiedError.message;

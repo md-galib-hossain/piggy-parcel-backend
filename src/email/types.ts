@@ -1,7 +1,7 @@
 // Email types
 export interface EmailServiceConfig {
 	resendApiKey: string;
-	emailFrom?: string;
+	emailFrom: string;
 	server: {
 		apiUrl: string;
 	};

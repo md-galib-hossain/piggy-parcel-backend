@@ -9,6 +9,7 @@ import { WelcomeTemplate } from "../templates/WelcomeTemplate";
 // Re-export for convenience
 export type { BaseTemplateConfig as TemplateConfig };
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation> Utility class for creating email templates.
 export class EmailTemplateFactory {
 	private static templates = new Map<
 		string,

@@ -1,11 +1,9 @@
 import { type Job, Worker } from "bullmq";
 import { Resend } from "resend";
-import { appConfig } from "../../app/config/AppConfig";
 import { createEmailConfig } from "../config/EmailConfig";
 import { EmailTemplateFactory } from "../factory/EmailTemplateFactory";
 import type { EmailJobData } from "../queue/email.queue";
 import { redisConnection } from "../queue/redis.connection";
-import { EmailServiceConfig } from "../types";
 
 // Load your app config (or env)
 const config = createEmailConfig();
@@ -34,7 +32,7 @@ export const emailWorker = new Worker<EmailJobData>(
 			console.log(`📧 Sending email: ${emailData.subject} to ${to}`);
 
 			const result = await resend.emails.send({
-				from: config.emailFrom!,
+				from: config.emailFrom,
 				to,
 				subject: emailData.subject,
 				html: emailData.html,

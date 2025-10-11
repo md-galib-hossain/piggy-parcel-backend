@@ -1,4 +1,4 @@
-import { createServer, type Server } from "http";
+import { createServer, type Server } from "node:http";
 import app from "./app";
 import { AppConfig } from "./app/config/AppConfig";
 import { pool } from "./db";

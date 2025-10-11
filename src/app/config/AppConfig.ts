@@ -33,7 +33,7 @@ const envSchema = z.object({
 	SMTP_PORT: z.coerce.number().optional(),
 	SMTP_USER: z.string().optional(),
 	SMTP_PASS: z.string().optional(),
-	EMAIL_FROM: z.email("Email from must be a valid email").optional(),
+	EMAIL_FROM: z.email("Email from must be a valid email"),
 
 	// Redis (for BullMQ)
 	REDIS_HOST: z.string().default("piggy-redis"),
@@ -78,7 +78,7 @@ interface AuthConfig {
 
 interface EmailConfig {
 	resendApiKey: string;
-	from?: string | undefined;
+	from: string;
 	smtp?: {
 		host?: string | undefined;
 		port?: number | undefined;

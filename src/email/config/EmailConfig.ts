@@ -22,7 +22,7 @@ export function createEmailConfig(): EmailServiceConfig {
 
 	return {
 		resendApiKey: appConfig.email.resendApiKey,
-		emailFrom: appConfig.email.from || "noreply@piggyparcel.com",
+		emailFrom: appConfig.email.from,
 		server: {
 			apiUrl: appConfig.server.apiUrl,
 		},

@@ -5,6 +5,7 @@ import {
 } from "./BaseEmailTemplate";
 
 export class WelcomeTemplate extends BaseEmailTemplate {
+	// biome-ignore lint/complexity/noUselessConstructor: <explanation> doesn't require it, but based on the code, it's currently required for proper inheritance.
 	constructor(config?: BaseTemplateConfig) {
 		super(config);
 	}
