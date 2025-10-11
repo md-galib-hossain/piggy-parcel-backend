@@ -18,6 +18,14 @@ const authSchema = { user, session, account, verification, rateLimit };
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, { provider: "pg", schema: authSchema }),
+	onAPIError: {
+		throw: true,
+		onError: (error, ctx) => {
+			// Custom error handling
+			console.error("Auth error:", { error });
+		},
+		// errorURL: "/auth/error",
+	},
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: true,

@@ -8,7 +8,7 @@ import express, {
 import httpStatus from "http-status";
 import { authHandler } from "@/app/auth/auth";
 import { AppConfig } from "@/app/config/AppConfig";
-import router from "@/app/routes";
+import router from "@/app/routes/v1";
 
 const app: Application = express();
 const corsOrigins = AppConfig.getInstance().security.corsOrigins;

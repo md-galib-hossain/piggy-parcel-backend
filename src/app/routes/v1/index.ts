@@ -1,4 +1,6 @@
 import { Router } from "express";
+import adminRoutes from "./admin";
+import consumerRoutes from "./consumer";
 
 const router: Router = Router();
 
@@ -10,5 +12,11 @@ router.get("/health", (req, res) => {
 		timestamp: new Date().toISOString(),
 	});
 });
+
+// Register Consumer Routes under /api/consumer
+router.use("/consumer", consumerRoutes);
+
+// Register Admin Routes under /api/admin
+router.use("/admin", adminRoutes);
 
 export default router;
