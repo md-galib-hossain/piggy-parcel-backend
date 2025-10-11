@@ -1,8 +1,8 @@
 import { createServer, type Server } from "node:http";
 import app from "./app";
 import { AppConfig } from "./app/config/AppConfig";
+import { initializeEmailService, seedSuperAdmin } from "./bootstrap";
 import { pool } from "./db";
-import { createEmailConfig, Email } from "./email";
 
 const server: Server = createServer(app);
 
@@ -34,10 +34,10 @@ async function main() {
 		const apiUrl = config.server.apiUrl;
 
 		// Initialize email service
-		const emailConfig = createEmailConfig();
-		Email.initialize(emailConfig);
+		initializeEmailService();
 
-		// await bootstrapSuperAdmin()
+		// Seed super admin
+		await seedSuperAdmin();
 
 		server.listen(port, () => {
 			console.log(`🚀 Server listening on port ${port}`);

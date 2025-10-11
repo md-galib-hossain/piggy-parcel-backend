@@ -2,7 +2,7 @@ import type { EmailData, EmailTemplate } from "../interfaces/EmailTemplate";
 
 export interface BaseTemplateConfig {
 	apiUrl?: string;
-	appName?: string;
+	appName: string;
 	primaryColor?: string;
 	logoUrl?: string;
 }

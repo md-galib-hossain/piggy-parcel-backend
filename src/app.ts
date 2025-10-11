@@ -6,8 +6,9 @@ import express, {
 	type Response,
 } from "express";
 import httpStatus from "http-status";
-import { AppConfig } from "./app/config/AppConfig";
-import router from "./app/routes";
+import { authHandler } from "@/app/auth/auth";
+import { AppConfig } from "@/app/config/AppConfig";
+import router from "@/app/routes";
 
 const app: Application = express();
 const corsOrigins = AppConfig.getInstance().security.corsOrigins;
@@ -31,6 +32,7 @@ app.get("/", (req: Request, res: Response) => {
 		},
 	});
 });
+app.all("/api/auth/{*any}", authHandler);
 
 app.use("/api/v1", router);
 

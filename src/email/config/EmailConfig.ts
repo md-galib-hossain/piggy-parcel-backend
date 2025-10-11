@@ -2,29 +2,38 @@
  * Simple email configuration setup
  */
 
-import { appConfig } from "../../app/config/AppConfig";
 import { EmailTemplateFactory } from "../factory/EmailTemplateFactory";
+import type { EmailServiceConfig } from "../index";
 import type { BaseTemplateConfig } from "../templates/BaseEmailTemplate";
-import type { EmailServiceConfig } from "../types";
 
 /**
  * Quick setup function for email configuration
  */
-export function createEmailConfig(): EmailServiceConfig {
-	// Set global template configuration
+export function createEmailConfig(options: {
+	resendApiKey: string;
+	fromEmail: string;
+	apiUrl: string;
+	appName: string;
+	primaryColor?: string;
+	logoUrl?: string;
+}): EmailServiceConfig {
 	const templateConfig: BaseTemplateConfig = {
-		apiUrl: appConfig.server.apiUrl,
-		appName: "Piggy Parcel",
-		primaryColor: "#4CAF50",
+		apiUrl: options.apiUrl,
+		appName: options.appName,
+		primaryColor: options.primaryColor || "#4CAF50",
 	};
+
+	if (options.logoUrl) {
+		templateConfig.logoUrl = options.logoUrl;
+	}
 
 	EmailTemplateFactory.setGlobalConfig(templateConfig);
 
 	return {
-		resendApiKey: appConfig.email.resendApiKey,
-		emailFrom: appConfig.email.from,
+		resendApiKey: options.resendApiKey,
+		emailFrom: options.fromEmail,
 		server: {
-			apiUrl: appConfig.server.apiUrl,
+			apiUrl: options.apiUrl,
 		},
 	};
 }
