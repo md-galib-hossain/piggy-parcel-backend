@@ -1,2 +1,2 @@
-export {db,pool} from "./db"
-export * from "./schema"
+export { db, pool } from "./db";
+export * from "./schema";

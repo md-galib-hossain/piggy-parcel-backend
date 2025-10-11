@@ -1,34 +1,37 @@
-import { EmailData } from "../interfaces/EmailTemplate";
-import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
+import type { EmailData } from "../interfaces/EmailTemplate";
+import {
+	BaseEmailTemplate,
+	type BaseTemplateConfig,
+} from "./BaseEmailTemplate";
 
 export class DeliveryUpdateTemplate extends BaseEmailTemplate {
-  constructor(config?: BaseTemplateConfig) {
-    super(config);
-  }
+	constructor(config?: BaseTemplateConfig) {
+		super(config);
+	}
 
-  render(data: { 
-    userName: string; 
-    trackingNumber: string; 
-    status: string;
-    estimatedDelivery?: string;
-  }): EmailData {
-    return this.buildEmail(data);
-  }
+	render(data: {
+		userName: string;
+		trackingNumber: string;
+		status: string;
+		estimatedDelivery?: string;
+	}): EmailData {
+		return this.buildEmail(data);
+	}
 
-  protected getEmailContent(data: { 
-    userName: string; 
-    trackingNumber: string; 
-    status: string;
-    estimatedDelivery?: string;
-  }): { subject: string; bodyHtml: string } {
-    const { userName, trackingNumber, status, estimatedDelivery } = data;
-    const subject = `Your Parcel is ${status}! 📦`;
-    const apiUrl = this.config?.apiUrl || '#';
-    
-    // Get status-specific styling and emoji
-    const statusInfo = this.getStatusInfo(status);
-    
-    const bodyHtml = `
+	protected getEmailContent(data: {
+		userName: string;
+		trackingNumber: string;
+		status: string;
+		estimatedDelivery?: string;
+	}): { subject: string; bodyHtml: string } {
+		const { userName, trackingNumber, status, estimatedDelivery } = data;
+		const subject = `Your Parcel is ${status}! 📦`;
+		const apiUrl = this.config?.apiUrl || "#";
+
+		// Get status-specific styling and emoji
+		const statusInfo = this.getStatusInfo(status);
+
+		const bodyHtml = `
       <div style="text-align: center; margin-bottom: 30px;">
         <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">Delivery Update ${statusInfo.emoji}</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0;">
@@ -46,13 +49,17 @@ export class DeliveryUpdateTemplate extends BaseEmailTemplate {
           </p>
         </div>
         
-        ${estimatedDelivery ? `
+        ${
+					estimatedDelivery
+						? `
           <div style="text-align: center; margin: 15px 0;">
             <p style="color: #333; font-size: 16px; margin: 0;">
               <strong>Estimated Delivery:</strong> ${estimatedDelivery}
             </p>
           </div>
-        ` : ''}
+        `
+						: ""
+				}
         
         <div style="text-align: center; margin-top: 20px;">
           <a href="${apiUrl}/track/${trackingNumber}" 
@@ -71,41 +78,49 @@ export class DeliveryUpdateTemplate extends BaseEmailTemplate {
         </p>
       </div>
     `;
-    
-    return { subject, bodyHtml };
-  }
 
-  private getStatusInfo(status: string): { emoji: string; bgColor: string; borderColor: string; textColor: string } {
-    const statusLower = status.toLowerCase();
-    
-    if (statusLower.includes('delivered')) {
-      return {
-        emoji: '✅',
-        bgColor: '#d4edda',
-        borderColor: '#c3e6cb',
-        textColor: '#155724'
-      };
-    } else if (statusLower.includes('out for delivery')) {
-      return {
-        emoji: '🚚',
-        bgColor: '#fff3cd',
-        borderColor: '#ffeaa7',
-        textColor: '#856404'
-      };
-    } else if (statusLower.includes('shipped') || statusLower.includes('transit')) {
-      return {
-        emoji: '📦',
-        bgColor: '#cce7ff',
-        borderColor: '#99d6ff',
-        textColor: '#004085'
-      };
-    } else {
-      return {
-        emoji: '📋',
-        bgColor: '#f8f9fa',
-        borderColor: '#dee2e6',
-        textColor: '#495057'
-      };
-    }
-  }
+		return { subject, bodyHtml };
+	}
+
+	private getStatusInfo(status: string): {
+		emoji: string;
+		bgColor: string;
+		borderColor: string;
+		textColor: string;
+	} {
+		const statusLower = status.toLowerCase();
+
+		if (statusLower.includes("delivered")) {
+			return {
+				emoji: "✅",
+				bgColor: "#d4edda",
+				borderColor: "#c3e6cb",
+				textColor: "#155724",
+			};
+		} else if (statusLower.includes("out for delivery")) {
+			return {
+				emoji: "🚚",
+				bgColor: "#fff3cd",
+				borderColor: "#ffeaa7",
+				textColor: "#856404",
+			};
+		} else if (
+			statusLower.includes("shipped") ||
+			statusLower.includes("transit")
+		) {
+			return {
+				emoji: "📦",
+				bgColor: "#cce7ff",
+				borderColor: "#99d6ff",
+				textColor: "#004085",
+			};
+		} else {
+			return {
+				emoji: "📋",
+				bgColor: "#f8f9fa",
+				borderColor: "#dee2e6",
+				textColor: "#495057",
+			};
+		}
+	}
 }

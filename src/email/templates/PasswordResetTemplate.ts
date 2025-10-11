@@ -1,20 +1,26 @@
-import { EmailData } from "../interfaces/EmailTemplate";
-import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
+import type { EmailData } from "../interfaces/EmailTemplate";
+import {
+	BaseEmailTemplate,
+	type BaseTemplateConfig,
+} from "./BaseEmailTemplate";
 
 export class PasswordResetTemplate extends BaseEmailTemplate {
-  constructor(config?: BaseTemplateConfig) {
-    super(config);
-  }
+	constructor(config?: BaseTemplateConfig) {
+		super(config);
+	}
 
-  render(data: { resetLink: string; userName: string }): EmailData {
-    return this.buildEmail(data);
-  }
+	render(data: { resetLink: string; userName: string }): EmailData {
+		return this.buildEmail(data);
+	}
 
-  protected getEmailContent(data: { resetLink: string; userName: string }): { subject: string; bodyHtml: string } {
-    const { resetLink, userName } = data;
-    const subject = `Reset Your ${this.appName} Password`;
-    
-    const bodyHtml = `
+	protected getEmailContent(data: { resetLink: string; userName: string }): {
+		subject: string;
+		bodyHtml: string;
+	} {
+		const { resetLink, userName } = data;
+		const subject = `Reset Your ${this.appName} Password`;
+
+		const bodyHtml = `
       <div style="text-align: center; margin-bottom: 30px;">
         <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">Password Reset Request 🔒</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0;">
@@ -45,11 +51,11 @@ export class PasswordResetTemplate extends BaseEmailTemplate {
       
       <div style="text-align: center; margin-top: 30px;">
         <p style="color: #888; font-size: 14px; line-height: 1.5; margin: 0;">
-          Having trouble? <a href="${this.config?.apiUrl || '#'}/support" style="color: ${this.primaryColor}; text-decoration: none;">Contact support</a>
+          Having trouble? <a href="${this.config?.apiUrl || "#"}/support" style="color: ${this.primaryColor}; text-decoration: none;">Contact support</a>
         </p>
       </div>
     `;
-    
-    return { subject, bodyHtml };
-  }
+
+		return { subject, bodyHtml };
+	}
 }

@@ -1,43 +1,53 @@
-import { EmailData } from "../interfaces/EmailTemplate";
-import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
+import type { EmailData } from "../interfaces/EmailTemplate";
+import {
+	BaseEmailTemplate,
+	type BaseTemplateConfig,
+} from "./BaseEmailTemplate";
 
 export interface OrderConfirmationData {
-  customerName: string;
-  orderNumber: string;
-  items: Array<{
-    name: string;
-    quantity: number;
-    price: string;
-  }>;
+	customerName: string;
+	orderNumber: string;
+	items: Array<{
+		name: string;
+		quantity: number;
+		price: string;
+	}>;
 }
 
 export class OrderConfirmationTemplate extends BaseEmailTemplate {
-  constructor(config?: BaseTemplateConfig) {
-    super(config);
-  }
+	constructor(config?: BaseTemplateConfig) {
+		super(config);
+	}
 
-  render(data: OrderConfirmationData): EmailData {
-    return this.buildEmail(data);
-  }
+	render(data: OrderConfirmationData): EmailData {
+		return this.buildEmail(data);
+	}
 
-  protected getEmailContent(data: OrderConfirmationData): { subject: string; bodyHtml: string } {
-    const { customerName, orderNumber, items } = data;
-    const subject = `Order Confirmation - ${orderNumber}`;
+	protected getEmailContent(data: OrderConfirmationData): {
+		subject: string;
+		bodyHtml: string;
+	} {
+		const { customerName, orderNumber, items } = data;
+		const subject = `Order Confirmation - ${orderNumber}`;
 
-    const totalAmount = items.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', ''));
-      return total + (price * item.quantity);
-    }, 0);
+		const totalAmount = items.reduce((total, item) => {
+			const price = parseFloat(item.price.replace("$", ""));
+			return total + price * item.quantity;
+		}, 0);
 
-    const itemsHtml = items.map(item => `
+		const itemsHtml = items
+			.map(
+				(item) => `
       <tr>
         <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.name}</td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${item.price}</td>
       </tr>
-    `).join('');
+    `,
+			)
+			.join("");
 
-    const bodyHtml = `
+		const bodyHtml = `
       <div style="text-align: center; margin-bottom: 30px;">
         <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">Order Confirmation</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0;">
@@ -81,11 +91,11 @@ export class OrderConfirmationTemplate extends BaseEmailTemplate {
 
       <div style="text-align: center; margin-top: 30px;">
         <p style="color: #888; font-size: 14px; line-height: 1.5; margin: 0;">
-          Questions about your order? <a href="${this.config?.apiUrl || '#'}/support" style="color: ${this.primaryColor}; text-decoration: none;">Contact our support team</a>
+          Questions about your order? <a href="${this.config?.apiUrl || "#"}/support" style="color: ${this.primaryColor}; text-decoration: none;">Contact our support team</a>
         </p>
       </div>
     `;
 
-    return { subject, bodyHtml };
-  }
+		return { subject, bodyHtml };
+	}
 }

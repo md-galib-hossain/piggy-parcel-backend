@@ -1,26 +1,32 @@
-import { EmailData } from "../interfaces/EmailTemplate";
-import { BaseEmailTemplate, BaseTemplateConfig } from "./BaseEmailTemplate";
+import type { EmailData } from "../interfaces/EmailTemplate";
+import {
+	BaseEmailTemplate,
+	type BaseTemplateConfig,
+} from "./BaseEmailTemplate";
 
 export interface AccountVerificationLinkData {
-  userName: string;
-  verificationLink: string;
-  validDuration?: string; // Optional duration for link validity (e.g., "24 hours")
+	userName: string;
+	verificationLink: string;
+	validDuration?: string; // Optional duration for link validity (e.g., "24 hours")
 }
 
 export class AccountVerificationLinkTemplate extends BaseEmailTemplate {
-  constructor(config?: BaseTemplateConfig) {
-    super(config);
-  }
+	constructor(config?: BaseTemplateConfig) {
+		super(config);
+	}
 
-  render(data: AccountVerificationLinkData): EmailData {
-    return this.buildEmail(data);
-  }
+	render(data: AccountVerificationLinkData): EmailData {
+		return this.buildEmail(data);
+	}
 
-  protected getEmailContent(data: AccountVerificationLinkData): { subject: string; bodyHtml: string } {
-    const { userName, verificationLink, validDuration } = data;
-    const subject = `Verify Your ${this.appName} Account`;
+	protected getEmailContent(data: AccountVerificationLinkData): {
+		subject: string;
+		bodyHtml: string;
+	} {
+		const { userName, verificationLink, validDuration } = data;
+		const subject = `Verify Your ${this.appName} Account`;
 
-    const bodyHtml = `
+		const bodyHtml = `
       <div style="text-align: center; margin-bottom: 30px;">
         <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">Account Verification</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
@@ -34,21 +40,21 @@ export class AccountVerificationLinkTemplate extends BaseEmailTemplate {
           </a>
         </div>
         ${
-          validDuration
-            ? `<p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">
+					validDuration
+						? `<p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">
                 This link is valid for ${validDuration}.
               </p>`
-            : ''
-        }
+						: ""
+				}
       </div>
       <div style="text-align: center; margin-top: 20px;">
         <p style="color: #888; font-size: 14px; line-height: 1.5; margin: 0;">
           If you didn't request this verification, please ignore this email or contact our
-          <a href="${this.config?.apiUrl || '#'}/support" style="color: ${this.primaryColor}; text-decoration: none;">support team</a>.
+          <a href="${this.config?.apiUrl || "#"}/support" style="color: ${this.primaryColor}; text-decoration: none;">support team</a>.
         </p>
       </div>
     `;
 
-    return { subject, bodyHtml };
-  }
+		return { subject, bodyHtml };
+	}
 }

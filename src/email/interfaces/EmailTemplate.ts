@@ -1,8 +1,8 @@
 export interface EmailData {
-  subject: string;
-  html: string;
+	subject: string;
+	html: string;
 }
 
 export interface EmailTemplate {
-  render(data: any): EmailData;
+	render(data: any): EmailData;
 }
