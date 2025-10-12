@@ -1,3 +1,5 @@
+import { fromNodeHeaders } from "better-auth/node";
+import type { IncomingHttpHeaders } from "http";
 import { auth } from "@/app/auth/auth";
 import { appConfig } from "@/app/config/AppConfig";
 import AppError from "@/app/errors/AppError";
@@ -49,24 +51,31 @@ const loginUser = async (email: string, password: string) => {
 
 const requestPasswordReset = async (email: string) => {
 	// Generate a simple token (in production, use JWT or secure random token)
-	const resetToken =
-		Math.random().toString(36).substring(2, 15) +
-		Math.random().toString(36).substring(2, 15);
 
-	const url = appConfig.client.web;
-	// In a real app, you'd store this token in the database with expiration
-	const resetLink = `${url}/reset-password?token=${resetToken}`;
-
-	const res = await Email.sendPasswordResetEmail(email, {
-		userName: "User", // In real app, get from database
-		resetLink: resetLink,
+	const url = appConfig.auth.url;
+	const data = await auth.api.requestPasswordReset({
+		body: {
+			email: email,
+			redirectTo: `${url}/reset-password`,
+		},
 	});
 
-	return res;
+	// const res = await Email.sendPasswordResetEmail(email, {
+	// 	userName: "User", // In real app, get from database
+	// 	resetLink: resetLink,
+	// });
+
+	return data;
 };
 
+const logoutUser = async (headers: IncomingHttpHeaders) => {
+	await auth.api.signOut({
+		headers: fromNodeHeaders(headers),
+	});
+};
 export const UserService = {
 	registerUser,
 	loginUser,
 	requestPasswordReset,
+	logoutUser,
 };

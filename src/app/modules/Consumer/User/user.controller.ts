@@ -25,14 +25,25 @@ const loginUser = catchAsync(async (req, res) => {
 	});
 });
 
+const logoutUser = catchAsync(async (req, res) => {
+	const headers = req.headers;
+	const result = await UserService.logoutUser(headers);
+
+	sendResponse(res, {
+		data: result,
+		success: true,
+		message: "User logged out successfully",
+		statusCode: 200,
+	});
+});
+
 const requestPasswordReset = catchAsync(async (req, res) => {
 	const { email } = req.body;
 	const result = await UserService.requestPasswordReset(email);
-	console.log(result, "asdasd");
 	sendResponse(res, {
 		data: null,
 		success: true,
-		message: "Password reset email sent",
+		message: result.message,
 		statusCode: 200,
 	});
 });
@@ -40,5 +51,6 @@ const requestPasswordReset = catchAsync(async (req, res) => {
 export const UserController = {
 	registerUser,
 	loginUser,
+	logoutUser,
 	requestPasswordReset,
 };

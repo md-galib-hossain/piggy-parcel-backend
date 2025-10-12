@@ -62,15 +62,9 @@ export const seedSuperAdmin = async () => {
 				.where(eq(user.email, email));
 
 			console.log("🚀 Superadmin created successfully");
-		}
-
-		// send welcome email
-		try {
 			await Email.sendWelcomeEmail(email, {
 				userName: config.superAdmin.name,
 			});
-		} catch (err) {
-			console.error("Failed to send welcome email:", err);
 		}
 	} catch (error) {
 		console.error("❌ Failed to bootstrap superAdmin:", error);
