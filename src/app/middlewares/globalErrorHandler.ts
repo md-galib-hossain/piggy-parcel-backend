@@ -17,6 +17,7 @@ export interface ErrorObject {
 	column?: string;
 	table?: string;
 	issues?: ZodIssueBase[];
+	status?: string; // For Better Auth API errors
 }
 
 const globalErrorHandler = (
@@ -54,9 +55,28 @@ const globalErrorHandler = (
 			},
 		];
 	}
+	// Handle Better Auth API errors
+	else if (err.status && typeof err.status === "string") {
+		statusCode = err.statusCode || 500;
+		message =
+			err.status === "UNAUTHORIZED"
+				? "Authentication required. Please log in to continue."
+				: err.status === "FORBIDDEN"
+					? "Access denied. You don't have permission to perform this action."
+					: err.status === "NOT_FOUND"
+						? "The requested resource was not found."
+						: err.status === "BAD_REQUEST"
+							? "Invalid request. Please check your input."
+							: "Authentication or authorization error occurred.";
+		errorSources = [
+			{
+				path: "",
+				message: message,
+			},
+		];
+	}
 	// Handle PostgreSQL/Database errors
 	else if (err.code && typeof err.code === "string") {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		const simplifiedError = handleDatabaseError(err as any);
 		statusCode = simplifiedError.statusCode;
 		message = simplifiedError.message;

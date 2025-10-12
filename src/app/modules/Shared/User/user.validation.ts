@@ -157,3 +157,8 @@ export const updateProfileSchema = z.object({
 		.optional(),
 	image: z.url("Invalid image URL").optional(),
 });
+
+// Change Email Schema
+export const changeEmailSchema = z.object({
+	email: z.email("Invalid email format"),
+});

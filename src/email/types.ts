@@ -43,3 +43,9 @@ export interface AccountVerificationLinkData {
 	userName: string;
 	verificationLink: string;
 }
+
+export interface ChangeEmailVerificationData {
+	userName: string;
+	verificationLink: string;
+	newEmail: string;
+}

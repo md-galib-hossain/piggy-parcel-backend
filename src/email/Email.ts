@@ -7,6 +7,7 @@
 import { enqueueEmail, initializeEmailService } from "./service/email.service";
 import type {
 	AccountVerificationLinkData,
+	ChangeEmailVerificationData,
 	DeliveryUpdateEmailData,
 	EmailOptions,
 	EmailServiceConfig,
@@ -71,6 +72,18 @@ export class Email {
 	): Promise<any> {
 		Email.checkInitialization();
 		return enqueueEmail("emailVerification", to, data, options);
+	}
+
+	/**
+	 * Send a change email verification email
+	 */
+	static async sendChangeEmailVerification(
+		to: string,
+		data: ChangeEmailVerificationData,
+		options?: EmailOptions,
+	): Promise<any> {
+		Email.checkInitialization();
+		return enqueueEmail("changeEmailVerification", to, data, options);
 	}
 
 	/**

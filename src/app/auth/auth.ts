@@ -58,6 +58,19 @@ export const auth = betterAuth({
 			userName: { type: "string", defaultValue: "", input: true },
 			role: { type: "string", input: false },
 		},
+		changeEmail: {
+			enabled: true,
+			sendChangeEmailVerification: async (
+				{ user, newEmail, url, token },
+				request,
+			) => {
+				await Email.sendChangeEmailVerification(user.email, {
+					userName: user.name,
+					verificationLink: url,
+					newEmail: newEmail,
+				});
+			},
+		},
 	},
 	advanced: {
 		cookiePrefix: "piggy-parcel",

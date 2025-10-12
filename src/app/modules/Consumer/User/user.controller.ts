@@ -47,10 +47,23 @@ const requestPasswordReset = catchAsync(async (req, res) => {
 		statusCode: 200,
 	});
 });
+const changeEmail = catchAsync(async (req, res) => {
+	const { email } = req.body;
+	const headers = req.headers;
+
+	const result = await UserService.changeEmail(email, headers);
+	sendResponse(res, {
+		data: null,
+		success: true,
+		message: "Email change requested. Please verify your new email.",
+		statusCode: 200,
+	});
+});
 
 export const UserController = {
 	registerUser,
 	loginUser,
 	logoutUser,
 	requestPasswordReset,
+	changeEmail,
 };

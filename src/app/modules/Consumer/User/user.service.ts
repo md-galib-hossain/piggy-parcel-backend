@@ -73,9 +73,19 @@ const logoutUser = async (headers: IncomingHttpHeaders) => {
 		headers: fromNodeHeaders(headers),
 	});
 };
+const changeEmail = async (newEmail: string, headers: IncomingHttpHeaders) => {
+	const res = await auth.api.changeEmail({
+		body: {
+			newEmail: newEmail,
+		},
+		headers: fromNodeHeaders(headers),
+	});
+	return res;
+};
 export const UserService = {
 	registerUser,
 	loginUser,
 	requestPasswordReset,
 	logoutUser,
+	changeEmail,
 };

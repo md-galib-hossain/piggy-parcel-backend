@@ -1,6 +1,7 @@
 import type { EmailTemplate } from "../interfaces/EmailTemplate";
 import { AccountVerificationLinkTemplate } from "../templates/AccountVerificationLink";
 import type { BaseTemplateConfig } from "../templates/BaseEmailTemplate";
+import { ChangeEmailVerificationTemplate } from "../templates/ChangeEmailVerificationTemplate";
 import { DeliveryUpdateTemplate } from "../templates/DeliveryUpdateTemplate";
 import { OrderConfirmationTemplate } from "../templates/OrderConfirmationTemplate";
 import { PasswordResetTemplate } from "../templates/PasswordResetTemplate";
@@ -23,6 +24,10 @@ export class EmailTemplateFactory {
 		],
 		["deliveryUpdate", (config) => new DeliveryUpdateTemplate(config)],
 		["orderConfirmation", (config) => new OrderConfirmationTemplate(config)],
+		[
+			"changeEmailVerification",
+			(config) => new ChangeEmailVerificationTemplate(config),
+		],
 	]);
 
 	private static globalConfig: BaseTemplateConfig | undefined;
