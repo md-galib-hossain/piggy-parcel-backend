@@ -1,5 +1,5 @@
 import type { RedisOptions } from "ioredis";
-import { appConfig } from "../../app/config/AppConfig";
+import { appConfig } from "../../app/config/app.config";
 
 export const redisConnection: RedisOptions = {
 	host: appConfig.redis.host,

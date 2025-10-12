@@ -1,7 +1,7 @@
 import { fromNodeHeaders } from "better-auth/node";
 import type { IncomingHttpHeaders } from "http";
 import { auth } from "@/app/auth/auth";
-import { appConfig } from "@/app/config/AppConfig";
+import { appConfig } from "@/app/config/app.config";
 import AppError from "@/app/errors/AppError";
 import type { CreateUser } from "@/app/types";
 import { Email } from "@/email";
@@ -74,13 +74,12 @@ const logoutUser = async (headers: IncomingHttpHeaders) => {
 	});
 };
 const changeEmail = async (newEmail: string, headers: IncomingHttpHeaders) => {
-	const res = await auth.api.changeEmail({
+	await auth.api.changeEmail({
 		body: {
 			newEmail: newEmail,
 		},
 		headers: fromNodeHeaders(headers),
 	});
-	return res;
 };
 export const UserService = {
 	registerUser,

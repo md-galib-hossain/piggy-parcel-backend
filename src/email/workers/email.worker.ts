@@ -1,6 +1,6 @@
 import { type Job, Worker } from "bullmq";
 import { Resend } from "resend";
-import { AppConfig } from "../../app/config/AppConfig";
+import { AppConfig } from "@/app/config/app.config";
 import { EmailTemplateFactory } from "../factory/EmailTemplateFactory";
 import type { EmailJobData } from "../queue/email.queue";
 import { redisConnection } from "../queue/redis.connection";

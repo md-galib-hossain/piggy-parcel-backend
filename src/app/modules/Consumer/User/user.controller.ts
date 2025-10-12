@@ -51,7 +51,7 @@ const changeEmail = catchAsync(async (req, res) => {
 	const { email } = req.body;
 	const headers = req.headers;
 
-	const result = await UserService.changeEmail(email, headers);
+	await UserService.changeEmail(email, headers);
 	sendResponse(res, {
 		data: null,
 		success: true,

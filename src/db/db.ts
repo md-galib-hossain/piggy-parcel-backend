@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { AppConfig } from "@/app/config/AppConfig";
+import { AppConfig } from "@/app/config/app.config";
 import * as schema from "./schema";
 
 const config = AppConfig.getInstance();

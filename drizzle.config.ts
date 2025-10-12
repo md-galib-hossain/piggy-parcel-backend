@@ -1,4 +1,4 @@
-import { AppConfig } from '@/app/config/AppConfig';
+import { AppConfig } from '@/app/config/app.config';
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
 

@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { toNodeHandler } from "better-auth/node";
 import { admin as adminPlugin, emailOTP } from "better-auth/plugins";
 import { ac, roles } from "@/app/auth/permissions";
-import { appConfig } from "@/app/config/AppConfig";
+import { appConfig } from "@/app/config/app.config";
 import {
 	account,
 	db,
