@@ -60,8 +60,19 @@ const changeEmail = catchAsync(async (req, res) => {
 	});
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+	const result = await UserService.getAllUsers();
+	sendResponse(res, {
+		data: result,
+		success: true,
+		message: "Users fetched successfully",
+		statusCode: 200,
+	});
+});
+
 export const UserController = {
 	registerUser,
+	getAllUsers,
 	loginUser,
 	logoutUser,
 	requestPasswordReset,

@@ -1,6 +1,6 @@
 import { createServer, type Server } from "node:http";
+import { AppConfig } from "@/app/config/app.config";
 import app from "./app";
-import { AppConfig } from "./app/config/app.config";
 import { initializeEmailService, seedSuperAdmin } from "./bootstrap";
 import { pool } from "./db";
 

@@ -15,6 +15,7 @@ const {
 	requestPasswordReset,
 	logoutUser,
 	changeEmail,
+	getAllUsers,
 } = UserController;
 
 userRoutes.post("/register", validateRequest(createUserSchema), registerUser);
@@ -26,5 +27,6 @@ userRoutes.post(
 	changeEmail,
 );
 userRoutes.post("/request-password-reset", requestPasswordReset);
+userRoutes.get("/", getAllUsers);
 
 export default userRoutes;

@@ -12,7 +12,6 @@ import globalErrorHandler from "@/app/middlewares/globalErrorHandler";
 import router from "@/app/routes/v1";
 import ErrorLogger from "./app/errors/ErrorLogger";
 import requestLogger from "./app/middlewares/requestLogger";
-import logger from "./utils/logger";
 
 const app: Application = express();
 const corsOrigins = AppConfig.getInstance().security.corsOrigins;
@@ -28,7 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 // IMPORTANT: This must come *before* your routes
 app.use(requestLogger);
 
-// biome-ignore lint/correctness/noUnusedFunctionParameters: <explanation> for testing purposes
 app.get("/", (req: Request, res: Response) => {
 	req.log.info({ user: "guest" }, "User visited the root page.");
 	res.json({

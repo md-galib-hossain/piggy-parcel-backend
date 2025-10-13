@@ -4,6 +4,7 @@ import { auth } from "@/app/auth/auth";
 import { appConfig } from "@/app/config/app.config";
 import AppError from "@/app/errors/AppError";
 import type { CreateUser } from "@/app/types";
+import { db, user } from "@/db";
 import { Email } from "@/email";
 
 const registerUser = async (userData: CreateUser) => {
@@ -81,10 +82,16 @@ const changeEmail = async (newEmail: string, headers: IncomingHttpHeaders) => {
 		headers: fromNodeHeaders(headers),
 	});
 };
+const getAllUsers = async () => {
+	const users = await db.select().from(user);
+	return users;
+};
+
 export const UserService = {
 	registerUser,
 	loginUser,
 	requestPasswordReset,
 	logoutUser,
 	changeEmail,
+	getAllUsers,
 };

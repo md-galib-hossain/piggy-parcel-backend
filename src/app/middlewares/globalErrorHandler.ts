@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import type { ZodIssueBase } from "zod/v3";
 import AppError from "../errors/AppError";
+import ErrorLogger from "../errors/ErrorLogger";
 import handleDatabaseError from "../errors/handleDatabaseError";
 import handleZodError from "../errors/handleZodError";
 import type { TErrorSource } from "../types";
@@ -19,12 +20,10 @@ export interface ErrorObject {
 	issues?: ZodIssueBase[];
 	status?: string; // For Better Auth API errors
 }
-
 const globalErrorHandler = (
 	err: ErrorObject,
 	req: Request,
 	res: Response,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	next: NextFunction,
 ) => {
 	let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
@@ -37,15 +36,20 @@ const globalErrorHandler = (
 		},
 	];
 
-	// Handle Zod validation errors
+	// The order of checks is mostly great.
 	if (err.name === "ZodError") {
 		const simplifiedError = handleZodError(err);
 		statusCode = simplifiedError.statusCode;
 		message = simplifiedError.message;
 		errorSources = simplifiedError.errorSources;
-	}
-	// Handle custom App errors
-	else if (err instanceof AppError) {
+	} else if (err.code && typeof err.code === "string") {
+		// Moved DB error check up to catch it before the generic 'Error'
+		const simplifiedError = handleDatabaseError(err as any);
+		statusCode = simplifiedError.statusCode;
+		message = simplifiedError.message;
+		errorSources = simplifiedError.errorSources;
+	} else if (err instanceof AppError) {
+		// This will now also catch UnauthorizedError, ForbiddenError, etc.
 		statusCode = err.statusCode;
 		message = err.message;
 		errorSources = [
@@ -54,36 +58,7 @@ const globalErrorHandler = (
 				message: err.message,
 			},
 		];
-	}
-	// Handle Better Auth API errors
-	else if (err.status && typeof err.status === "string") {
-		statusCode = err.statusCode || 500;
-		message =
-			err.status === "UNAUTHORIZED"
-				? "Authentication required. Please log in to continue."
-				: err.status === "FORBIDDEN"
-					? "Access denied. You don't have permission to perform this action."
-					: err.status === "NOT_FOUND"
-						? "The requested resource was not found."
-						: err.status === "BAD_REQUEST"
-							? "Invalid request. Please check your input."
-							: "Authentication or authorization error occurred.";
-		errorSources = [
-			{
-				path: "",
-				message: message,
-			},
-		];
-	}
-	// Handle PostgreSQL/Database errors
-	else if (err.code && typeof err.code === "string") {
-		const simplifiedError = handleDatabaseError(err as any);
-		statusCode = simplifiedError.statusCode;
-		message = simplifiedError.message;
-		errorSources = simplifiedError.errorSources;
-	}
-	// Handle general JavaScript errors
-	else if (err instanceof Error) {
+	} else if (err instanceof Error) {
 		message = err.message;
 		errorSources = [
 			{
@@ -93,16 +68,14 @@ const globalErrorHandler = (
 		];
 	}
 
-	// Log error in development (skip NODE_ENV check for now)
-	console.error("🚨 Error Details:", {
-		message: err.message,
-		stack: err.stack,
+	ErrorLogger.log(err as Error, {
+		message: "GlobalErrorHandler caught an error",
 		statusCode,
 		path: req.path,
 		method: req.method,
+		// Be cautious logging the full body in production
+		// Pino's redaction should protect sensitive fields
 		body: req.body,
-		query: req.query,
-		params: req.params,
 	});
 
 	// Send error response
@@ -110,8 +83,8 @@ const globalErrorHandler = (
 		success,
 		message,
 		errorSources,
-		// Include stack trace in development - will be configured later
-		...(err.stack && { stack: err.stack }),
+		// Only include stack in non-production environments
+		stack: process.env.NODE_ENV !== "production" ? err.stack : undefined,
 	});
 };
 

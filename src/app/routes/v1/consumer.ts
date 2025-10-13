@@ -11,7 +11,7 @@ interface RouteConfig {
 
 const consumerRoutes: RouteConfig[] = [
 	{
-		path: "/user",
+		path: "/users",
 		route: userRoutes,
 	},
 	// Add more consumer routes here

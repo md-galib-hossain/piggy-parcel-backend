@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@/app/auth/auth";
 import { AppConfig } from "@/app/config/app.config";
 import { db, user } from "@/db";
+
 import { createEmailConfig, Email } from "@/email";
 
 export function initializeEmailService() {
