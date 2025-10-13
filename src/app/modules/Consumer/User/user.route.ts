@@ -1,4 +1,5 @@
 import express from "express";
+import authGuard from "@/app/middlewares/authGuard";
 import validateRequest from "@/app/middlewares/validateRequest";
 import {
 	changeEmailSchema,
@@ -16,6 +17,7 @@ const {
 	logoutUser,
 	changeEmail,
 	getAllUsers,
+	updateMyProfile,
 } = UserController;
 
 userRoutes.post("/register", validateRequest(createUserSchema), registerUser);
@@ -28,5 +30,6 @@ userRoutes.post(
 );
 userRoutes.post("/request-password-reset", requestPasswordReset);
 userRoutes.get("/", getAllUsers);
+userRoutes.patch("/:id", authGuard, updateMyProfile);
 
 export default userRoutes;

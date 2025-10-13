@@ -1,11 +1,13 @@
 import { fromNodeHeaders } from "better-auth/node";
+import { eq } from "drizzle-orm";
 import type { IncomingHttpHeaders } from "http";
 import { auth } from "@/app/auth/auth";
 import { appConfig } from "@/app/config/app.config";
 import AppError from "@/app/errors/AppError";
-import type { CreateUser } from "@/app/types";
+import type { CreateUser, UpdateUser } from "@/app/types";
 import { db, user } from "@/db";
 import { Email } from "@/email";
+import type { User } from "../../Shared/User/user.interface";
 
 const registerUser = async (userData: CreateUser) => {
 	const user = await auth.api.signUpEmail({
@@ -87,6 +89,17 @@ const getAllUsers = async () => {
 	return users;
 };
 
+const updateMyProfile = async (
+	loggedInUser: User,
+	data: UpdateUser,
+	id: string,
+) => {
+	if (loggedInUser.id !== id)
+		throw new AppError(403, "You are not allowed to update this profile");
+	const a = db.update(user).set(data).where(eq(user.id, id));
+	return a;
+};
+
 export const UserService = {
 	registerUser,
 	loginUser,
@@ -94,4 +107,5 @@ export const UserService = {
 	logoutUser,
 	changeEmail,
 	getAllUsers,
+	updateMyProfile,
 };

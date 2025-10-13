@@ -1,3 +1,5 @@
+import { fromNodeHeaders } from "better-auth/node";
+import { auth } from "@/app/auth/auth";
 import catchAsync from "@/app/utils/catchAsync";
 import sendResponse from "@/app/utils/sendResponse";
 import { UserService } from "./user.service";
@@ -61,11 +63,23 @@ const changeEmail = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
+	const user = req.headers.authorization;
+	console.log({ user });
 	const result = await UserService.getAllUsers();
 	sendResponse(res, {
 		data: result,
 		success: true,
 		message: "Users fetched successfully",
+		statusCode: 200,
+	});
+});
+const updateMyProfile = catchAsync(async (req, res) => {
+	const id = req.params.id as string;
+	const result = await UserService.updateMyProfile(req.user, req.body, id);
+	sendResponse(res, {
+		data: result,
+		success: true,
+		message: "User profile updated successfully",
 		statusCode: 200,
 	});
 });
@@ -77,4 +91,5 @@ export const UserController = {
 	logoutUser,
 	requestPasswordReset,
 	changeEmail,
+	updateMyProfile,
 };

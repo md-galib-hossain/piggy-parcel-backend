@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { toNodeHandler } from "better-auth/node";
-import { admin as adminPlugin, emailOTP } from "better-auth/plugins";
+import { admin as adminPlugin, bearer, emailOTP } from "better-auth/plugins";
 import { ac, roles } from "@/app/auth/permissions";
 import { appConfig } from "@/app/config/app.config";
 import {
@@ -89,6 +89,7 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
+		bearer(),
 		adminPlugin({
 			defaultRole: "USER",
 			adminRoles: ["ADMIN", "SUPERADMIN"],

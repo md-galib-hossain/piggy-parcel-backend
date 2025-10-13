@@ -27,30 +27,30 @@ app.use(express.urlencoded({ extended: true }));
 // IMPORTANT: This must come *before* your routes
 app.use(requestLogger);
 
-app.get("/", (req: Request, res: Response) => {
-	req.log.info({ user: "guest" }, "User visited the root page.");
-	res.json({
-		success: true,
-		message: "🚀 Piggy Parcel API v1 is running!",
-		endpoints: {
-			users: "/api/v1/consumer/users",
-			health: "/api/v1/health",
-			test: "/api/v1/test",
-		},
-	});
-});
-app.get("/user-error", (req: Request, res: Response) => {
-	try {
-		throw new Error("This is a simulated user-facing error!");
-	} catch (error) {
-		// Use the standardized ErrorLogger
-		if (error instanceof Error) {
-			ErrorLogger.log(error, { route: req.path, userId: "123" });
-		}
-		res.status(500).send("An error occurred.");
-	}
-});
-app.all("/api/auth/{*any}", authHandler);
+// app.get("/", (req: Request, res: Response) => {
+// 	req.log.info({ user: "guest" }, "User visited the root page.");
+// 	res.json({
+// 		success: true,
+// 		message: "🚀 Piggy Parcel API v1 is running!",
+// 		endpoints: {
+// 			users: "/api/v1/consumer/users",
+// 			health: "/api/v1/health",
+// 			test: "/api/v1/test",
+// 		},
+// 	});
+// });
+// app.get("/user-error", (req: Request, res: Response) => {
+// 	try {
+// 		throw new Error("This is a simulated user-facing error!");
+// 	} catch (error) {
+// 		// Use the standardized ErrorLogger
+// 		if (error instanceof Error) {
+// 			ErrorLogger.log(error, { route: req.path, userId: "123" });
+// 		}
+// 		res.status(500).send("An error occurred.");
+// 	}
+// });
+app.all("/api/v1/auth/{*any}", authHandler);
 
 app.use("/api/v1", router);
 
