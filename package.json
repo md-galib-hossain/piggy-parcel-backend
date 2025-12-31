@@ -9,7 +9,12 @@
     "start:dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/server.ts",
     "email-worker": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/email/workers/email.worker.ts",
     "email-worker:prod": "node ./dist/email/workers/email.worker.js",
-    "lint-format": "biome check --write"
+    "lint-format": "biome check --write",
+     "drizzle:generate": "drizzle-kit generate",
+  "drizzle:migrate": "drizzle-kit migrate",
+  "drizzle:push": "drizzle-kit push",
+  "drizzle:studio": "drizzle-kit studio"
+
   },
   "keywords": [],
   "author": "",
